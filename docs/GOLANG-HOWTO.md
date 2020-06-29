@@ -14,7 +14,7 @@ go get github.com/google/tink/go/...
 to run all the tests locally:
 
 ```sh
-cd $GOPATH/go/src/github.com/google/tink/go
+cd $GOPATH/src/github.com/google/tink/go
 go test ./...
 ```
 
@@ -22,7 +22,7 @@ Golang Tink API also supports [Bazel](https://www.bazel.build) builds. To run
 the tests using bazel:
 
 ```sh
-cd $GOPATH/go/src/github.com/google/tink/go
+cd $GOPATH/src/github.com/google/tink/go
 bazel build ... && bazel test ...
 ```
 
@@ -283,12 +283,12 @@ func main() {
 
         exportedPriv := &keyset.MemReaderWriter{}
         if err := insecurecleartextkeyset.Write(khPriv, exportedPriv); err != nil {
-          return nil, err
+                log.Fatal(err)
         }
 
         ksPriv, err := proto.Marshal(exportedPriv.Keyset)
         if err != nil {
-          return nil, err
+                log.Fatal(err)
         }
 
         // TODO: store ksPriv somewhere safe.
@@ -303,12 +303,12 @@ func main() {
 
         exportedPub := &keyset.MemReaderWriter{}
         if err = insecurecleartextkeyset.Write(khPub, exportedPub); err != nil {
-          return nil, err
+                log.Fatal(err)
         }
 
         ksPub, err := proto.Marshal(exportedPub.Keyset)
         if err != nil {
-          return nil, err
+                log.Fatal(err)
         }
 
         // TODO: share ksPub with the sender.
@@ -536,6 +536,7 @@ import (
         "github.com/google/tink/go/core/registry"
         "github.com/google/tink/go/integration/gcpkms"
         "github.com/google/tink/go/keyset"
+        "github.com/google/tink/go/testkeyset"
 )
 
 const (
@@ -581,7 +582,7 @@ func main() {
                 log.Fatal(err)
         }
 
-        if !proto.Equal(kh1.Keyset(), kh2.Keyset()) {
+        if !proto.Equal(testkeyset.KeysetMaterial(kh1), testkeyset.KeysetMaterial(kh2)) {
                 log.Fatal("key handlers are not equal")
         }
 

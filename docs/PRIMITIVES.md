@@ -80,7 +80,7 @@ Hybrid Encryption  | ECIES with AEAD and HKDF
 | Primitive          | Go Implementations                                                       |
 | ------------------ | ------------------------------------------------------------------------ |
 | AEAD               | AES-GCM, AES-CTR-HMAC, KMS Envelope, CHACHA20-POLY1305, XCHACHA-POLY1305 |
-| Streaming AEAD     | AES-GCM-HKDF-STREAMING                                                   |
+| Streaming AEAD     | AES-GCM-HKDF-STREAMING, AES-CTR-HMAC-STREAMING                           |
 | Deterministic AEAD | AES-SIV                                                                  |
 | MAC                | HMAC-SHA2, AES-CMAC                                                      |
 | PRF                | HKDF-SHA2, HMAC-SHA2, AES-CMAC                                           |
