@@ -61,6 +61,7 @@ func createHMACPRFKeyTemplate(keySize uint32, hashType commonpb.HashType) *tinkp
 	format := hmacpb.HmacPrfKeyFormat{
 		Params:  &params,
 		KeySize: keySize,
+		Version: hmacprfKeyVersion,
 	}
 	serializedFormat, _ := proto.Marshal(&format)
 	return &tinkpb.KeyTemplate{
@@ -79,6 +80,7 @@ func createHKDFPRFKeyTemplate(keySize uint32, hashType commonpb.HashType, salt [
 	format := hkdfpb.HkdfPrfKeyFormat{
 		Params:  &params,
 		KeySize: keySize,
+		Version: hkdfprfKeyVersion,
 	}
 	serializedFormat, _ := proto.Marshal(&format)
 	return &tinkpb.KeyTemplate{
@@ -92,6 +94,7 @@ func createHKDFPRFKeyTemplate(keySize uint32, hashType commonpb.HashType, salt [
 func createAESCMACPRFKeyTemplate(keySize uint32) *tinkpb.KeyTemplate {
 	format := cmacpb.AesCmacPrfKeyFormat{
 		KeySize: keySize,
+		Version: aescmacprfKeyVersion,
 	}
 	serializedFormat, _ := proto.Marshal(&format)
 	return &tinkpb.KeyTemplate{

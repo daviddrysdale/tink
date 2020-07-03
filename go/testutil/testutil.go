@@ -293,6 +293,7 @@ func NewAESGCMKeyData(keySize uint32) *tinkpb.KeyData {
 func NewAESGCMKeyFormat(keySize uint32) *gcmpb.AesGcmKeyFormat {
 	return &gcmpb.AesGcmKeyFormat{
 		KeySize: keySize,
+		Version: AESGCMKeyVersion,
 	}
 }
 
@@ -338,6 +339,7 @@ func NewAESGCMHKDFKeyFormat(
 	ciphertextSegmentSize uint32,
 ) *gcmhkdfpb.AesGcmHkdfStreamingKeyFormat {
 	return &gcmhkdfpb.AesGcmHkdfStreamingKeyFormat{
+		Version: AESGCMHKDFKeyVersion,
 		KeySize: keySize,
 		Params: &gcmhkdfpb.AesGcmHkdfStreamingParams{
 			CiphertextSegmentSize: ciphertextSegmentSize,
@@ -422,6 +424,7 @@ func NewHMACKeyFormat(hashType commonpb.HashType, tagSize uint32) *hmacpb.HmacKe
 	return &hmacpb.HmacKeyFormat{
 		Params:  params,
 		KeySize: keySize,
+		Version: HMACKeyVersion,
 	}
 }
 
@@ -503,6 +506,7 @@ func NewHMACPRFKeyFormat(hashType commonpb.HashType) *hmacprfpb.HmacPrfKeyFormat
 	return &hmacprfpb.HmacPrfKeyFormat{
 		Params:  params,
 		KeySize: keySize,
+		Version: HMACPRFKeyVersion,
 	}
 }
 
@@ -532,6 +536,7 @@ func NewHKDFPRFKeyFormat(hashType commonpb.HashType, salt []byte) *hkdfprfpb.Hkd
 	return &hkdfprfpb.HkdfPrfKeyFormat{
 		Params:  params,
 		KeySize: keySize,
+		Version: HKDFPRFKeyVersion,
 	}
 }
 
@@ -548,6 +553,7 @@ func NewAESCMACPRFKey() *aescmacprfpb.AesCmacPrfKey {
 func NewAESCMACPRFKeyFormat() *aescmacprfpb.AesCmacPrfKeyFormat {
 	keySize := uint32(32)
 	return &aescmacprfpb.AesCmacPrfKeyFormat{
+		Version: AESCMACPRFKeyVersion,
 		KeySize: keySize,
 	}
 }

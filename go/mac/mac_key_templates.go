@@ -74,6 +74,7 @@ func createHMACKeyTemplate(keySize uint32,
 	format := hmacpb.HmacKeyFormat{
 		Params:  &params,
 		KeySize: keySize,
+		Version: hmacKeyVersion,
 	}
 	serializedFormat, _ := proto.Marshal(&format)
 	return &tinkpb.KeyTemplate{
