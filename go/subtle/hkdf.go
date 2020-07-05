@@ -15,7 +15,6 @@
 package subtle
 
 import (
-	"errors"
 	"fmt"
 	"io"
 
@@ -26,8 +25,6 @@ const (
 	// Minimum tag size in bytes. This provides minimum 80-bit security strength.
 	minTagSizeInBytes = uint32(10)
 )
-
-var errHKDFInvalidInput = errors.New("HKDF: invalid input")
 
 // validateHKDFParams validates parameters of HKDF constructor.
 func validateHKDFParams(hash string, keySize uint32, tagSize uint32) error {
