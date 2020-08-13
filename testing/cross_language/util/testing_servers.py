@@ -49,6 +49,9 @@ _SERVER_PATHS = {
     'python': [
         'python/bazel-bin/testing_server',
         'python/testing_server',
+    ],
+    'rust': [
+        '%s/target/debug/tink-testing-server' % os.environ['TINK_RUST_DIR'],
     ]
 }
 
@@ -73,12 +76,12 @@ _PRIMITIVES = list(_PRIMITIVE_STUBS.keys())
 
 SUPPORTED_LANGUAGES_BY_PRIMITIVE = {
     'aead': ['cc', 'go', 'java', 'python'],
-    'daead': ['cc', 'go', 'java', 'python'],
+    'daead': ['cc', 'go', 'java', 'python', 'rust'],
     'streaming_aead': ['cc', 'go', 'java', 'python'],
     'hybrid': ['cc', 'go', 'java', 'python'],
-    'mac': ['cc', 'go', 'java', 'python'],
+    'mac': ['cc', 'go', 'java', 'python', 'rust'],
     'signature': ['cc', 'go', 'java', 'python'],
-    'prf': ['cc', 'java', 'go', 'python'],
+    'prf': ['cc', 'java', 'go', 'python', 'rust'],
 }
 
 

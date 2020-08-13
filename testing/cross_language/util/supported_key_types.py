@@ -24,7 +24,7 @@ from tink import streaming_aead
 from tink.proto import tink_pb2
 
 # All languages supported by cross-language tests.
-ALL_LANGUAGES = ['cc', 'java', 'go', 'python']
+ALL_LANGUAGES = ['cc', 'java', 'go', 'python', 'rust']
 
 # All KeyTypes (without the prefix 'type.googleapis.com/google.crypto.tink.')
 AEAD_KEY_TYPES = [
@@ -69,19 +69,19 @@ SUPPORTED_LANGUAGES = {
     'AesCtrHmacAeadKey': ['cc', 'java', 'go', 'python'],
     'ChaCha20Poly1305Key': ['java', 'go'],
     'XChaCha20Poly1305Key': ['cc', 'java', 'go', 'python'],
-    'AesSivKey': ['cc', 'java', 'go', 'python'],
+    'AesSivKey': ['cc', 'java', 'go', 'python', 'rust'],
     'AesCtrHmacStreamingKey': ['cc', 'java', 'go', 'python'],
     'AesGcmHkdfStreamingKey': ['cc', 'java', 'go', 'python'],
     'EciesAeadHkdfPrivateKey': ['cc', 'java', 'go', 'python'],
-    'AesCmacKey': ['cc', 'java', 'go', 'python'],
-    'HmacKey': ['cc', 'java', 'go', 'python'],
+    'AesCmacKey': ['cc', 'java', 'go', 'python', 'rust'],
+    'HmacKey': ['cc', 'java', 'go', 'python', 'rust'],
     'EcdsaPrivateKey': ['cc', 'java', 'go', 'python'],
     'Ed25519PrivateKey': ['cc', 'java', 'go', 'python'],
     'RsaSsaPkcs1PrivateKey': ['cc', 'java', 'python'],
     'RsaSsaPssPrivateKey': ['cc', 'java', 'python'],
-    'AesCmacPrfKey': ['cc', 'java', 'go', 'python'],
-    'HmacPrfKey': ['cc', 'java', 'go', 'python'],
-    'HkdfPrfKey': ['cc', 'java', 'go', 'python'],
+    'AesCmacPrfKey': ['cc', 'java', 'go', 'python', 'rust'],
+    'HmacPrfKey': ['cc', 'java', 'go', 'python', 'rust'],
+    'HkdfPrfKey': ['cc', 'java', 'go', 'python', 'rust'],
 }
 
 KEY_TYPE_FROM_URL = {

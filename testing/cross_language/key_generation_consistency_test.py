@@ -35,7 +35,7 @@ from util import testing_servers
 # Test cases that succeed in a language but should fail
 SUCCEEDS_BUT_SHOULD_FAIL = [
     # TODO(b/159989251)
-    # HMAC with SHA384 is accepted in go, but not in other langs.
+    # HMAC with SHA384 is accepted in Go and Rust, but not in other langs.
     ('HmacKey(32,10,SHA384)', 'go'),
     ('HmacKey(32,16,SHA384)', 'go'),
     ('HmacKey(32,20,SHA384)', 'go'),
@@ -44,6 +44,14 @@ SUCCEEDS_BUT_SHOULD_FAIL = [
     ('HmacKey(32,32,SHA384)', 'go'),
     ('HmacKey(32,33,SHA384)', 'go'),
     ('HmacPrfKey(32,SHA384)', 'go'),
+    ('HmacKey(32,10,SHA384)', 'rust'),
+    ('HmacKey(32,16,SHA384)', 'rust'),
+    ('HmacKey(32,20,SHA384)', 'rust'),
+    ('HmacKey(32,21,SHA384)', 'rust'),
+    ('HmacKey(32,24,SHA384)', 'rust'),
+    ('HmacKey(32,32,SHA384)', 'rust'),
+    ('HmacKey(32,33,SHA384)', 'rust'),
+    ('HmacPrfKey(32,SHA384)', 'rust'),
     # TODO(b/160130470): In CC and Python Hybrid templates are not checked for
     # valid AEAD params. (These params *are* checked when the key is used.)
     ('EciesAeadHkdfPrivateKey(NIST_P256,UNCOMPRESSED,SHA256,AesEaxKey(15,11))',
