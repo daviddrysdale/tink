@@ -39,7 +39,7 @@ _SERVER_PATHS = {
         'cc/testing_server'
     ],
     'go': [
-        'go/bazel-bin/linux_amd64_stripped/testing_server',
+        'go/bazel-bin/%s_amd64_stripped/testing_server' % os.uname().sysname.lower(),
         'go/testing_server'
     ],
     'java': [
