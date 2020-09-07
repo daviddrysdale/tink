@@ -81,10 +81,12 @@ func TestEd25519VerifyModifiedSignature(t *testing.T) {
 
 	for i := 0; i < len(sign); i++ {
 		for j := 0; j < 8; j++ {
+			prev := sign[i]
 			sign[i] = byte(sign[i] ^ (1 << uint32(j)))
 			if err := verifier.Verify(sign, data); err == nil {
-				t.Errorf("unexpected error when verifying: %s", err)
+				t.Errorf("unexpected success when verifying signature modified at [%d] bit %d", i, j)
 			}
+			sign[i] = prev
 		}
 	}
 }
@@ -108,10 +110,12 @@ func TestEd25519VerifyModifiedMessage(t *testing.T) {
 
 	for i := 0; i < len(data); i++ {
 		for j := 0; j < 8; j++ {
+			prev := data[i]
 			data[i] = byte(data[i] ^ (1 << uint32(j)))
 			if err := verifier.Verify(sign, data); err == nil {
-				t.Errorf("unexpected error when verifying: %s", err)
+				t.Errorf("unexpected success when verifying data modified at [%d] bit %d", i, j)
 			}
+			data[i] = prev
 		}
 	}
 }
