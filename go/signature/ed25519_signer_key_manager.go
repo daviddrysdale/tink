@@ -68,7 +68,7 @@ func (km *ed25519SignerKeyManager) Primitive(serializedKey []byte) (interface{},
 }
 
 // NewKey creates a new ED25519PrivateKey according to specification the given serialized ED25519KeyFormat.
-func (km *ed25519SignerKeyManager) NewKey(serializedKey []byte) (proto.Message, error) {
+func (km *ed25519SignerKeyManager) NewKey(serializedKeyFormat []byte) (proto.Message, error) {
 	public, private, err := ed25519.GenerateKey(rand.Reader)
 	if err != nil {
 		return nil, fmt.Errorf("ed25519_signer_key_manager: cannot generate ED25519 key: %s", err)
@@ -86,7 +86,7 @@ func (km *ed25519SignerKeyManager) NewKey(serializedKey []byte) (proto.Message, 
 	return privateProto, nil
 }
 
-// NewKeyData creates a new KeyData according to specification in  the given
+// NewKeyData creates a new KeyData according to specification in the given
 // serialized ED25519KeyFormat. It should be used solely by the key management API.
 func (km *ed25519SignerKeyManager) NewKeyData(serializedKeyFormat []byte) (*tinkpb.KeyData, error) {
 	key, err := km.NewKey(serializedKeyFormat)

@@ -203,7 +203,7 @@ func (d testDecrypter) DecryptSegment(segment, nonce []byte) ([]byte, error) {
 	}
 	tag := segment[tagStart:]
 	if !bytes.Equal(nonce, tag) {
-		return nil, fmt.Errorf("tag mismtach:\nsegment: %s\nnonce: %s\ntag: %s", hex.EncodeToString(segment), hex.EncodeToString(nonce), hex.EncodeToString(tag))
+		return nil, fmt.Errorf("tag mismatch:\nsegment: %s\nnonce: %s\ntag: %s", hex.EncodeToString(segment), hex.EncodeToString(nonce), hex.EncodeToString(tag))
 	}
 	result := make([]byte, tagStart)
 	copy(result, segment[:tagStart])
