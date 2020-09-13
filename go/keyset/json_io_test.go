@@ -57,8 +57,8 @@ func TestJSONIOUnencrypted(t *testing.T) {
 }
 
 func TestJSONReader(t *testing.T) {
-	gcmkey := []byte(testutil.NewAESGCMKey(0, 16).String())
-	eaxkey := []byte(testutil.NewHMACKey(commonpb.HashType_SHA512, 32).String())
+	gcmkey, _ := proto.Marshal(testutil.NewAESGCMKey(0, 16))
+	eaxkey, _ := proto.Marshal(testutil.NewHMACKey(commonpb.HashType_SHA512, 32))
 	jsonKeyset := fmt.Sprintf(`{
          "primaryKeyId":42,
          "key":[
@@ -123,7 +123,7 @@ func TestJSONReader(t *testing.T) {
 }
 
 func TestJSONReaderLargeIds(t *testing.T) {
-	gcmkey := []byte(testutil.NewAESGCMKey(0, 16).String())
+	gcmkey, _ := proto.Marshal(testutil.NewAESGCMKey(0, 16))
 	jsonKeyset := fmt.Sprintf(`{
          "primaryKeyId":4294967275,
          "key":[
@@ -168,7 +168,7 @@ func TestJSONReaderLargeIds(t *testing.T) {
 }
 
 func TestJSONReaderNegativeIds(t *testing.T) {
-	gcmkey := []byte(testutil.NewAESGCMKey(0, 16).String())
+	gcmkey, _ := proto.Marshal(testutil.NewAESGCMKey(0, 16))
 	jsonKeyset := fmt.Sprintf(`{
          "primaryKeyId": -10,
          "key":[
@@ -194,7 +194,7 @@ func TestJSONReaderNegativeIds(t *testing.T) {
 
 // Tests that large IDs (>2^31) are written correctly.
 func TestJSONWriterLargeId(t *testing.T) {
-	eaxkey := []byte(testutil.NewHMACKey(commonpb.HashType_SHA512, 32).String())
+	eaxkey, _ := proto.Marshal(testutil.NewHMACKey(commonpb.HashType_SHA512, 32))
 
 	ks := tinkpb.Keyset{
 		PrimaryKeyId: 4294967275,
