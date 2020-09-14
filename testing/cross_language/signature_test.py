@@ -41,6 +41,16 @@ def key_rotation_test_cases(
         for new_key_tmpl in KEY_ROTATION_TEMPLATES:
           yield (enc_lang, dec_lang, old_key_tmpl, new_key_tmpl)
 
+# Test cases that fail in a language but should succeed
+FAILS_BUT_SHOULD_SUCCEED = [
+    # TODO: Rust does not support Ecdsa with NIST_P384 nor NIST_P521.
+    ('ECDSA_P384', 'rust'),
+    ('ECDSA_P384_IEEE_P1363', 'rust'),
+    ('ECDSA_P384_SHA384', 'rust'),
+    ('ECDSA_P384_SHA384_IEEE_P1363', 'rust'),
+    ('ECDSA_P521', 'rust'),
+    ('ECDSA_P521_IEEE_P1363', 'rust'),
+]
 
 def setUpModule():
   signature.register()
@@ -72,21 +82,23 @@ class SignaturePythonTest(parameterized.TestCase):
     supported_signers = [
         testing_servers.public_key_sign(lang, private_keyset)
         for lang in supported_langs
+        if (key_template_name, lang) not in FAILS_BUT_SHOULD_SUCCEED
     ]
     unsupported_signers = [
         testing_servers.public_key_sign(lang, private_keyset)
         for lang in SUPPORTED_LANGUAGES
-        if lang not in supported_langs
+        if (lang not in supported_langs or (key_template_name, lang) in FAILS_BUT_SHOULD_SUCCEED)
     ]
     public_keyset = testing_servers.public_keyset('java', private_keyset)
     supported_verifiers = [
         testing_servers.public_key_verify(lang, public_keyset)
         for lang in supported_langs
+        if (key_template_name, lang) not in FAILS_BUT_SHOULD_SUCCEED
     ]
     unsupported_verifiers = [
         testing_servers.public_key_verify(lang, public_keyset)
         for lang in testing_servers.LANGUAGES
-        if lang not in supported_langs
+        if (lang not in supported_langs or (key_template_name, lang) in FAILS_BUT_SHOULD_SUCCEED)
     ]
     for signer in supported_signers:
       message = (

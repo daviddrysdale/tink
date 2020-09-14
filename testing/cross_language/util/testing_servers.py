@@ -80,7 +80,7 @@ SUPPORTED_LANGUAGES_BY_PRIMITIVE = {
     'streaming_aead': ['cc', 'go', 'java', 'python'],
     'hybrid': ['cc', 'go', 'java', 'python'],
     'mac': ['cc', 'go', 'java', 'python', 'rust'],
-    'signature': ['cc', 'go', 'java', 'python'],
+    'signature': ['cc', 'go', 'java', 'python', 'rust'],
     'prf': ['cc', 'java', 'go', 'python', 'rust'],
 }
 

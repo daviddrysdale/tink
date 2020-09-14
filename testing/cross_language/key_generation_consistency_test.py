@@ -87,6 +87,13 @@ FAILS_BUT_SHOULD_SUCCEED = [
      'java'),
     ('EciesAeadHkdfPrivateKey(NIST_P521,UNCOMPRESSED,SHA384,AesGcmKey(16))',
      'java'),
+    # TODO: Rust does not support Ecdsa with NIST_P384 nor NIST_P521.
+    ('EcdsaPrivateKey(SHA384,NIST_P384,IEEE_P1363)', 'rust'),
+    ('EcdsaPrivateKey(SHA384,NIST_P384,DER)', 'rust'),
+    ('EcdsaPrivateKey(SHA512,NIST_P384,IEEE_P1363)', 'rust'),
+    ('EcdsaPrivateKey(SHA512,NIST_P384,DER)', 'rust'),
+    ('EcdsaPrivateKey(SHA512,NIST_P521,IEEE_P1363)', 'rust'),
+    ('EcdsaPrivateKey(SHA512,NIST_P521,DER)', 'rust'),
 ]
 
 HASH_TYPES = [
