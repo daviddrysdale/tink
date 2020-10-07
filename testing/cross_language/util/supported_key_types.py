@@ -65,7 +65,7 @@ ALL_KEY_TYPES = (
 SUPPORTED_LANGUAGES = {
     'AesEaxKey': ['cc', 'java', 'python'],
     'AesGcmKey': ['cc', 'java', 'go', 'python', 'rust'],
-    'AesGcmSivKey': ['cc', 'python'],
+    'AesGcmSivKey': ['cc', 'java', 'python'],
     'AesCtrHmacAeadKey': ['cc', 'java', 'go', 'python', 'rust'],
     'ChaCha20Poly1305Key': ['java', 'go', 'rust'],
     'XChaCha20Poly1305Key': ['cc', 'java', 'go', 'python', 'rust'],
