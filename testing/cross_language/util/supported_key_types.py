@@ -64,11 +64,11 @@ ALL_KEY_TYPES = (
 # All languages that are supported by a KeyType
 SUPPORTED_LANGUAGES = {
     'AesEaxKey': ['cc', 'java', 'python'],
-    'AesGcmKey': ['cc', 'java', 'go', 'python'],
+    'AesGcmKey': ['cc', 'java', 'go', 'python', 'rust'],
     'AesGcmSivKey': ['cc', 'python'],
-    'AesCtrHmacAeadKey': ['cc', 'java', 'go', 'python'],
-    'ChaCha20Poly1305Key': ['java', 'go'],
-    'XChaCha20Poly1305Key': ['cc', 'java', 'go', 'python'],
+    'AesCtrHmacAeadKey': ['cc', 'java', 'go', 'python', 'rust'],
+    'ChaCha20Poly1305Key': ['java', 'go', 'rust'],
+    'XChaCha20Poly1305Key': ['cc', 'java', 'go', 'python', 'rust'],
     'AesSivKey': ['cc', 'java', 'go', 'python', 'rust'],
     'AesCtrHmacStreamingKey': ['cc', 'java', 'go', 'python'],
     'AesGcmHkdfStreamingKey': ['cc', 'java', 'go', 'python'],

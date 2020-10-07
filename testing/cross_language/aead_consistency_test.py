@@ -43,8 +43,9 @@ HASH_TYPES = [
 # Test cases that succeed in a language but should fail
 SUCCEEDS_BUT_SHOULD_FAIL = [
     # TODO(b/159989251)
-    # HMAC with SHA384 is accepted in go, but not in other langs.
+    # HMAC with SHA384 is accepted in Go and Rust, but not in other langs.
     ('AesCtrHmacAeadKey(16,16,16,16,SHA384,0,0,0)', 'go'),
+    ('AesCtrHmacAeadKey(16,16,16,16,SHA384,0,0,0)', 'rust'),
 ]
 
 # Test cases that fail in a language but should succeed
