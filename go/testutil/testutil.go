@@ -131,51 +131,42 @@ func (d *DummyKMSClient) GetAEAD(keyURI string) (tink.AEAD, error) {
 
 // NewTestAESGCMKeyset creates a new Keyset containing an AESGCMKey.
 func NewTestAESGCMKeyset(primaryOutputPrefixType tinkpb.OutputPrefixType) *tinkpb.Keyset {
-	keyData := NewAESGCMKeyData(16)
-	return NewTestKeyset(keyData, primaryOutputPrefixType)
+	return NewTestKeyset(func() *tinkpb.KeyData { return NewAESGCMKeyData(16) }, primaryOutputPrefixType)
 }
 
 // NewTestAESSIVKeyset creates a new Keyset containing an AesSivKey.
 func NewTestAESSIVKeyset(primaryOutputPrefixType tinkpb.OutputPrefixType) *tinkpb.Keyset {
-	keyValue := random.GetRandomBytes(subtledaead.AESSIVKeySize)
-	key := &aspb.AesSivKey{
-		Version:  AESSIVKeyVersion,
-		KeyValue: keyValue,
-	}
-	serializedKey, err := proto.Marshal(key)
-	if err != nil {
-		log.Fatalf("failed serializing proto: %v", err)
-	}
-	keyData := NewKeyData(AESSIVTypeURL, serializedKey, tinkpb.KeyData_SYMMETRIC)
-	return NewTestKeyset(keyData, primaryOutputPrefixType)
+	return NewTestKeyset(NewAESSIVKeyData, primaryOutputPrefixType)
 }
 
 // NewTestHMACKeyset creates a new Keyset containing a HMACKey.
 func NewTestHMACKeyset(tagSize uint32,
 	primaryOutputPrefixType tinkpb.OutputPrefixType) *tinkpb.Keyset {
-	keyData := NewHMACKeyData(commonpb.HashType_SHA256, tagSize)
-	return NewTestKeyset(keyData, primaryOutputPrefixType)
+	return NewTestKeyset(func() *tinkpb.KeyData {
+		return NewHMACKeyData(commonpb.HashType_SHA256, tagSize)
+	}, primaryOutputPrefixType)
 }
 
-// NewTestAESGCMHKDFKeyset creates a new Keyset containing an AESGCMHKDFKey.
+// NewTestAESGCMHKDFKeyset creates a new Keyset containing multiple AESGCMHKDFKey.
 func NewTestAESGCMHKDFKeyset() *tinkpb.Keyset {
 	const (
 		keySize               = 16
 		derivedKeySize        = 16
 		ciphertextSegmentSize = 4096
 	)
-	keyData := NewAESGCMHKDFKeyData(keySize, derivedKeySize, commonpb.HashType_SHA256, ciphertextSegmentSize)
-	return NewTestKeyset(keyData, tinkpb.OutputPrefixType_RAW)
+	return NewTestKeyset(func() *tinkpb.KeyData {
+		return NewAESGCMHKDFKeyData(keySize, derivedKeySize, commonpb.HashType_SHA256, ciphertextSegmentSize)
+	}, tinkpb.OutputPrefixType_RAW)
 }
 
-// NewTestKeyset creates a new test Keyset.
-func NewTestKeyset(keyData *tinkpb.KeyData,
+// NewTestKeyset creates a new test Keyset, cycling around the provided KeyData for each key.
+func NewTestKeyset(keyDataGenerator func() *tinkpb.KeyData,
 	primaryOutputPrefixType tinkpb.OutputPrefixType) *tinkpb.Keyset {
-	primaryKey := NewKey(keyData, tinkpb.KeyStatusType_ENABLED, 42, primaryOutputPrefixType)
-	rawKey := NewKey(keyData, tinkpb.KeyStatusType_ENABLED, 43, tinkpb.OutputPrefixType_RAW)
-	legacyKey := NewKey(keyData, tinkpb.KeyStatusType_ENABLED, 44, tinkpb.OutputPrefixType_LEGACY)
-	tinkKey := NewKey(keyData, tinkpb.KeyStatusType_ENABLED, 45, tinkpb.OutputPrefixType_TINK)
-	crunchyKey := NewKey(keyData, tinkpb.KeyStatusType_ENABLED, 46, tinkpb.OutputPrefixType_CRUNCHY)
+	primaryKey := NewKey(keyDataGenerator(), tinkpb.KeyStatusType_ENABLED, 42, primaryOutputPrefixType)
+	rawKey := NewKey(keyDataGenerator(), tinkpb.KeyStatusType_ENABLED, 43, tinkpb.OutputPrefixType_RAW)
+	legacyKey := NewKey(keyDataGenerator(), tinkpb.KeyStatusType_ENABLED, 44, tinkpb.OutputPrefixType_LEGACY)
+	tinkKey := NewKey(keyDataGenerator(), tinkpb.KeyStatusType_ENABLED, 45, tinkpb.OutputPrefixType_TINK)
+	crunchyKey := NewKey(keyDataGenerator(), tinkpb.KeyStatusType_ENABLED, 46, tinkpb.OutputPrefixType_CRUNCHY)
 	keys := []*tinkpb.Keyset_Key{primaryKey, rawKey, legacyKey, tinkKey, crunchyKey}
 	return NewKeyset(primaryKey.KeyId, keys)
 }
@@ -269,6 +260,20 @@ func NewED25519PrivateKey() *ed25519pb.Ed25519PrivateKey {
 // NewED25519PublicKey creates an ED25519PublicKey with randomly generated key material.
 func NewED25519PublicKey() *ed25519pb.Ed25519PublicKey {
 	return NewED25519PrivateKey().PublicKey
+}
+
+// NewAESSIVKeyData creates a KeyData containing a randomly generate AESSIVKey.
+func NewAESSIVKeyData() *tinkpb.KeyData {
+	keyValue := random.GetRandomBytes(subtledaead.AESSIVKeySize)
+	key := &aspb.AesSivKey{
+		Version:  AESSIVKeyVersion,
+		KeyValue: keyValue,
+	}
+	serializedKey, err := proto.Marshal(key)
+	if err != nil {
+		log.Fatalf("failed serializing proto: %v", err)
+	}
+	return NewKeyData(AESSIVTypeURL, serializedKey, tinkpb.KeyData_SYMMETRIC)
 }
 
 // NewAESGCMKey creates a randomly generated AESGCMKey.

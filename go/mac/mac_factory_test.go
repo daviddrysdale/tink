@@ -193,7 +193,7 @@ func TestFactoryLegacyFixedKeyTag(t *testing.T) {
 		Value:           serializedKey,
 		KeyMaterialType: tinkpb.KeyData_SYMMETRIC,
 	}
-	keyset := testutil.NewTestKeyset(keyData, tinkpb.OutputPrefixType_LEGACY)
+	keyset := testutil.NewTestKeyset(func() *tinkpb.KeyData { return keyData }, tinkpb.OutputPrefixType_LEGACY)
 	primaryKey := keyset.Key[0]
 	if primaryKey.OutputPrefixType != tinkpb.OutputPrefixType_LEGACY {
 		t.Errorf("expect a legacy key")
