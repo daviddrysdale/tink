@@ -64,6 +64,10 @@ var (
 
 	// ErrTooManySegments indicates that the ciphertext has too many segments.
 	ErrTooManySegments = errors.New("too many segments")
+
+	// ErrFirstSegmentOffsetTooLarge indicates that the first ciphertext segment
+	// offset is too large.
+	ErrFirstSegmentOffsetTooLarge = errors.New(" first segment offset bigger than segment size")
 )
 
 // SegmentEncrypter facilitates implementing various streaming AEAD encryption
@@ -119,6 +123,11 @@ type WriterParams struct {
 func NewWriter(params WriterParams) (*Writer, error) {
 	if params.NonceSize-len(params.NoncePrefix) < 5 {
 		return nil, ErrNonceSizeTooShort
+	}
+	ciphertextSegmentSize := (params.PlaintextSegmentSize + params.NonceSize)
+	if ciphertextSegmentSize-params.FirstCiphertextSegmentOffset < params.NonceSize {
+		// Need room for a whole nonce in the first ciphertext segment.
+		return nil, ErrFirstSegmentOffsetTooLarge
 	}
 	return &Writer{
 		w:                            params.W,
@@ -248,6 +257,10 @@ type ReaderParams struct {
 func NewReader(params ReaderParams) (*Reader, error) {
 	if params.NonceSize-len(params.NoncePrefix) < 5 {
 		return nil, ErrNonceSizeTooShort
+	}
+	if params.CiphertextSegmentSize-params.FirstCiphertextSegmentOffset < params.NonceSize {
+		// Need room for a whole nonce in the first ciphertext segment.
+		return nil, ErrFirstSegmentOffsetTooLarge
 	}
 	return &Reader{
 		r:                            params.R,

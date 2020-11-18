@@ -140,12 +140,33 @@ func TestNonceBased_invalidParameters(t *testing.T) {
 			chunkSize:                    5,
 			expectedError:                noncebased.ErrNonceSizeTooShort,
 		},
+		{
+			name:                         "firstSegmentOffsetWayTooLarge",
+			plaintextSize:                100,
+			nonceSize:                    10,
+			noncePrefixSize:              5,
+			plaintextSegmentSize:         20,
+			firstCiphertextSegmentOffset: 200,
+			chunkSize:                    5,
+			expectedError:                noncebased.ErrFirstSegmentOffsetTooLarge,
+		},
+		{
+			name:                         "segment1IncompleteNonce",
+			plaintextSize:                100,
+			nonceSize:                    10,
+			noncePrefixSize:              5,
+			plaintextSegmentSize:         10,
+			firstCiphertextSegmentOffset: 11,
+			chunkSize:                    500,
+			expectedError:                noncebased.ErrFirstSegmentOffsetTooLarge,
+		},
 	}
 
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
 			writerParams := noncebased.WriterParams{
 				NonceSize:                    tc.nonceSize,
+				PlaintextSegmentSize:         tc.plaintextSegmentSize,
 				FirstCiphertextSegmentOffset: tc.firstCiphertextSegmentOffset,
 			}
 			_, _, _, err := testEncrypt(tc.plaintextSize, tc.noncePrefixSize, writerParams)
